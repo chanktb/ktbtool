@@ -1,0 +1,172 @@
+/* popup.css (Phiên bản tinh chỉnh và dọn dẹp) */
+
+/* === CÀI ĐẶT CHUNG === */
+body {
+    width: 320px; /* Tăng nhẹ chiều rộng cho thoáng */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    background-color: #f8fafc; /* Màu nền dịu hơn */
+    color: #1e293b; /* Màu chữ chính */
+}
+
+/* === KHU VỰC CHIA PHẦN === */
+.section {
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.section-title {
+    font-size: 1em; /* Giảm kích thước cho cân đối */
+    font-weight: 600;
+    margin: 0 0 12px 0;
+    color: #0f172a;
+    text-align: left;
+}
+
+/* === DANH SÁCH MOCKUP === */
+#mockup-list {
+    max-height: 180px;
+    overflow-y: auto;
+    margin: 0 -8px; /* Mở rộng ra cho đẹp */
+    padding: 0 8px;
+}
+
+.mockup-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 6px;
+    border: 1px solid #e2e8f0; /* Viền mỏng hơn */
+    border-radius: 8px; /* Bo tròn nhiều hơn */
+    cursor: pointer;
+    background-color: #ffffff;
+    transition: all 0.2s ease-in-out;
+}
+
+.mockup-item:hover {
+    border-color: #94a3b8;
+    background-color: #f8fafc;
+}
+
+.mockup-item.selected {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+
+.mockup-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.mockup-item span {
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* === CÁC LỰA CHỌN CÀI ĐẶT === */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group input[type="text"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 0.9em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-group input[type="text"]:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+
+/* === LỰA CHỌN RADIO BUTTON === */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Tăng khoảng cách */
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 8px;
+    /* Tùy chỉnh radio button cho đẹp hơn (tùy chọn) */
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #fff;
+    width: 1.15em;
+    height: 1.15em;
+    border: 1px solid #94a3b8;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+}
+
+.radio-group input[type="radio"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    background-color: #2563eb;
+}
+
+.radio-group input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+.radio-group input[type="radio"]:checked {
+    border-color: #2563eb;
+}
+
+
+/* === THANH TRẠNG THÁI === */
+#status {
+    text-align: center;
+    padding: 10px;
+    font-size: 0.85em;
+    color: #16a34a;
+    font-weight: 500;
+    height: 14px;
+    transition: opacity 0.3s;
+}
+.labeled-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.labeled-input label {
+    font-size: 0.9em;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.labeled-input input[type="number"] {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 0.9em;
+}
+h4.section-title {
+    margin-bottom: 0;
+}

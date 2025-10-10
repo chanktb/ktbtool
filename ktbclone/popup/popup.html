@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cài đặt KTB Cloner</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+    <div class="section">
+        <h3 class="section-title">Chọn Mockup Mặc định</h3>
+        <div id="mockup-list"></div>
+    </div>
+
+    <div class="section">
+        <h3 class="section-title">Nguồn Tên File (cho trang này)</h3>
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="filename-source" value="image_src" checked>
+                Từ tên file ảnh (Mặc định)
+            </label>
+            <label>
+                <input type="radio" name="filename-source" value="clipboard">
+                Từ Clipboard
+            </label>
+        </div>
+    </div>
+	<div class="section">
+			<h3 class="section-title">Tùy chọn Design</h3> <div class="input-group">
+				<input type="text" id="prefix" placeholder="Tiền tố (Prefix)">
+				<input type="text" id="suffix" placeholder="Hậu tố (Suffix)">
+				<input type="text" id="watermark" placeholder="Watermark (text hoặc ten_file.png)">
+			<h4 class="section-title">Xoay: Số + theo kim đồng hồ</h4>
+				<div class="labeled-input">
+					<input type="number" id="rotation" value="0" step="1">
+				</div>
+			</div>
+		</div>
+
+    <div id="status"></div>
+    <script src="popup.js"></script>
+</body>
+</html>
