@@ -103,7 +103,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     "Unisex",
     "mug",
     "shirt0",
-	"gift0"
+    "gift0",
   ];
 
   // --- 2. CÁC HÀM TIỆN ÍCH VÀ XỬ LÝ ẢNH ---
@@ -116,36 +116,51 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       img.src = url;
     });
   }
-  function magicWandRemove(ctx, canvas, startX, startY, tolerance) {
-    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imgData.data;
+  function sharpenCanvas(canvas, amount = 1.2) {
+    const ctx = canvas.getContext("2d");
     const width = canvas.width;
     const height = canvas.height;
-    const seedIdx = (startY * width + startX) * 4;
-    if (data[seedIdx + 3] === 0) return;
-    const sr = data[seedIdx],
-      sg = data[seedIdx + 1],
-      sb = data[seedIdx + 2];
-    const stack = [[startX, startY]];
-    while (stack.length > 0) {
-      const [x, y] = stack.pop();
-      if (x < 0 || x >= width || y < 0 || y >= height) continue;
-      const idx = y * width + x;
-      const i = idx * 4;
-      if (data[i + 3] === 0) continue;
-      const r = data[i],
-        g = data[i + 1],
-        b = data[i + 2];
-      const colorMatch =
-        Math.abs(r - sr) <= tolerance &&
-        Math.abs(g - sg) <= tolerance &&
-        Math.abs(b - sb) <= tolerance;
-      if (colorMatch) {
-        data[i + 3] = 0;
-        stack.push([x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]);
-      }
-    }
-    ctx.putImageData(imgData, 0, 0);
+
+    const sharpenedCanvas = document.createElement("canvas");
+    sharpenedCanvas.width = width;
+    sharpenedCanvas.height = height;
+    const sharpCtx = sharpenedCanvas.getContext("2d");
+
+    // Vẽ ảnh gốc
+    sharpCtx.drawImage(canvas, 0, 0);
+
+    // Vẽ một lớp ảnh mờ lên trên
+    sharpCtx.globalCompositeOperation = "difference";
+    sharpCtx.filter = "blur(1px)";
+    sharpCtx.drawImage(canvas, 0, 0);
+
+    // Tăng cường độ sắc nét bằng cách vẽ lại lớp difference đó
+    sharpCtx.globalCompositeOperation = "lighter";
+    sharpCtx.filter = "brightness(1)"; // Reset filter
+    sharpCtx.globalAlpha = amount; // amount càng cao, ảnh càng nét
+    sharpCtx.drawImage(
+      sharpCtx.canvas,
+      0,
+      0,
+      width,
+      height,
+      0,
+      0,
+      width,
+      height
+    );
+
+    // Kết hợp ảnh gốc và lớp chi tiết
+    const finalCanvas = document.createElement("canvas");
+    finalCanvas.width = width;
+    finalCanvas.height = height;
+    const finalCtx = finalCanvas.getContext("2d");
+
+    finalCtx.drawImage(canvas, 0, 0); // Vẽ ảnh gốc
+    finalCtx.globalCompositeOperation = "lighter";
+    finalCtx.drawImage(sharpenedCanvas, 0, 0); // Cộng thêm chi tiết
+
+    return finalCanvas;
   }
   function getTrimmedCanvas(canvas) {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -194,19 +209,47 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
   }
   async function removeBackground(canvas) {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    const tolerance = 30;
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imgData.data;
     const width = canvas.width;
     const height = canvas.height;
-    const corners = [
+    const tolerance = 35; // Có thể tăng/giảm giá trị này
+
+    // Lấy mẫu màu nền từ 4 góc
+    const cornerSamples = [
       { x: 1, y: 1 },
       { x: width - 2, y: 1 },
       { x: 1, y: height - 2 },
       { x: width - 2, y: height - 2 },
     ];
-    for (const corner of corners) {
-      magicWandRemove(ctx, canvas, corner.x, corner.y, tolerance);
+
+    const backgroundColors = cornerSamples.map((corner) => {
+      const i = (corner.y * width + corner.x) * 4;
+      return { r: data[i], g: data[i + 1], b: data[i + 2] };
+    });
+
+    // Hàm kiểm tra một pixel có phải màu nền không
+    function isBackgroundColor(r, g, b) {
+      return backgroundColors.some(
+        (bgColor) =>
+          Math.abs(r - bgColor.r) <= tolerance &&
+          Math.abs(g - bgColor.g) <= tolerance &&
+          Math.abs(b - bgColor.b) <= tolerance
+      );
     }
-    return getTrimmedCanvas(canvas);
+
+    // Lặp qua tất cả các pixel
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      if (isBackgroundColor(r, g, b)) {
+        data[i + 3] = 0; // Làm cho pixel trong suốt
+      }
+    }
+
+    ctx.putImageData(imgData, 0, 0);
+    return getTrimmedCanvas(canvas); // getTrimmedCanvas vẫn giữ nguyên
   }
   function determineShirtColor(image, coords) {
     const canvas = document.createElement("canvas");
@@ -541,6 +584,8 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     }, 100);
   }
 
+  // Thay thế hàm processScreenshot cũ bằng hàm này
+
   async function processScreenshot(msg) {
     if (!msg.cropData || msg.cropData.w <= 0 || msg.cropData.h <= 0) return;
     try {
@@ -562,7 +607,14 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
         msg.cropData.w,
         msg.cropData.h
       );
+
+      // --- THAY ĐỔI BẮT ĐẦU TỪ ĐÂY ---
+
+      // 1. Tách nền bằng thuật toán mới, sạch hơn
       const transparentDesignCanvas = await removeBackground(designCanvas);
+
+      // 2. Làm nét ảnh đã tách nền
+      const sharpenedCanvas = sharpenCanvas(transparentDesignCanvas, 1.2); // Tăng 1.2 lên để nét hơn
 
       const settings = await chrome.storage.sync.get([
         "settingOverrides",
@@ -572,7 +624,10 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       const mockupOverrides = overrides[msg.selectedMockup.id] || {};
       const angle = settings.rotationAngle || 0;
 
-      const rotatedDesignCanvas = rotateCanvas(transparentDesignCanvas, angle);
+      // 3. Xoay ảnh đã được làm nét
+      const rotatedDesignCanvas = rotateCanvas(sharpenedCanvas, angle);
+
+      // --- PHẦN CÒN LẠI GIỮ NGUYÊN ---
 
       const prefix =
         mockupOverrides.prefix !== undefined
@@ -588,7 +643,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
           : msg.selectedMockup.defaults.watermark;
 
       const finalCanvas = await composeOnMockup(
-        rotatedDesignCanvas,
+        rotatedDesignCanvas, // Sử dụng canvas đã xoay và làm nét
         screenshotImg,
         msg.cropData,
         msg.selectedMockup,
@@ -600,9 +655,8 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
         .join(" ")
         .trim();
 
-      let dataUrl = finalCanvas.toDataURL("image/jpeg", 0.9);
+      let dataUrl = finalCanvas.toDataURL("image/jpeg", 0.95); // Tăng chất lượng ảnh lên 0.95
 
-      // Các giá trị EXIF mặc định
       const exif_defaults = {
         Software: "Adobe Photoshop 22.3",
         Make: "Canon",
