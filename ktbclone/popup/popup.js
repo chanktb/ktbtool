@@ -1,61 +1,61 @@
 // popup.js (Phiên bản lưu cài đặt theo website)
 const MOCKUP_SETS = [
-    { 
-        name: 'Printiment', 
-        id: 'printiment', 
-        extension: 'jpg', 
-        coords: { x: 423, y: 305, w: 404, h: 527 },
-        defaults: {
-            prefix: 'Official',
-            suffix: 'Tee Sweater Hoodie',
-            watermark: 'printiment.png'
-        }
+    {
+      name: "Printiment",
+      id: "printiment",
+      extension: "jpg",
+      coords: { x: 441, y: 335, w: 363, h: 451 },
+      defaults: {
+        prefix: "Official",
+        suffix: "Tee Sweater Hoodie",
+        watermark: "printiment.png",
+      },
     },
-    { 
-        name: 'KTBTee', 
-        id: 'ktbtee', 
-        extension: 'webp', 
-        coords: { x: 362, y: 254, w: 424, h: 582 },
-        defaults: {
-            prefix: 'Original',
-            suffix: 'Shirt',
-            watermark: 'ktbtee.png'
-        }
+    {
+      name: "KTBTee",
+      id: "ktbtee",
+      extension: "webp",
+      coords: { x: 376, y: 261, w: 391, h: 483 },
+      defaults: {
+        prefix: "Original",
+        suffix: "Shirt",
+        watermark: "ktbtee.png",
+      },
     },
-    { 
-        name: 'Whatwillwear', 
-        id: 'whatwillwear', 
-        extension: 'jpg', 
-        coords: { x: 370, y: 356, w: 415, h: 610 },
-        defaults: {
-            prefix: 'Premium',
-            suffix: 'Sweatshirt Tee',
-            watermark: 'whatwillwear.png'
-        }
+    {
+      name: "Whatwillwear",
+      id: "whatwillwear",
+      extension: "jpg",
+      coords: { x: 393, y: 298, w: 381, h: 490 },
+      defaults: {
+        prefix: "Premium",
+        suffix: "Sweatshirt Tee",
+        watermark: "whatwillwear.png",
+      },
     },
-    { 
-        name: 'Amertee', 
-        id: 'amertee', 
-        extension: 'jpg', 
-        coords: { x: 373, y: 240, w: 447, h: 601 },
-        defaults: {
-            prefix: 'Original',
-            suffix: 'Shirt Hoodie',
-            watermark: 'amertee.png'
-        }
+    {
+      name: "Amertee",
+      id: "amertee",
+      extension: "jpg",
+      coords: { x: 373, y: 240, w: 447, h: 601 },
+      defaults: {
+        prefix: "Original",
+        suffix: "Shirt Hoodie",
+        watermark: "amertee.png",
+      },
     },
-    { 
-        name: 'Albumcoverprint', 
-        id: 'albumcoverprint', 
-        extension: 'jpg', 
-        coords: { x: 358, y: 240, w: 469, h: 583 },
-        defaults: {
-            prefix: 'Trendy',
-            suffix: 'Sweater Tee',
-            watermark: 'albumcoverprint.png'
-        }
-    }
-];
+    {
+      name: "Albumcoverprint",
+      id: "albumcoverprint",
+      extension: "jpg",
+      coords: { x: 358, y: 240, w: 469, h: 583 },
+      defaults: {
+        prefix: "Trendy",
+        suffix: "Sweater Tee",
+        watermark: "albumcoverprint.png",
+      },
+    },
+  ];
 
 document.addEventListener('DOMContentLoaded', () => {
     const listContainer = document.getElementById('mockup-list');

@@ -9,7 +9,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       name: "Printiment",
       id: "printiment",
       extension: "jpg",
-      coords: { x: 423, y: 305, w: 404, h: 527 },
+      coords: { x: 441, y: 335, w: 363, h: 451 },
       defaults: {
         prefix: "Official",
         suffix: "Tee Sweater Hoodie",
@@ -20,7 +20,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       name: "KTBTee",
       id: "ktbtee",
       extension: "webp",
-      coords: { x: 362, y: 254, w: 424, h: 582 },
+      coords: { x: 376, y: 261, w: 391, h: 483 },
       defaults: {
         prefix: "Original",
         suffix: "Shirt",
@@ -31,7 +31,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       name: "Whatwillwear",
       id: "whatwillwear",
       extension: "jpg",
-      coords: { x: 370, y: 356, w: 415, h: 610 },
+      coords: { x: 393, y: 298, w: 381, h: 490 },
       defaults: {
         prefix: "Premium",
         suffix: "Sweatshirt Tee",
@@ -62,51 +62,58 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     },
   ];
   const TITLE_CLEAN_KEYWORDS = [
-    "Orament-Christmas-den",
-    "Ornament-X-Mas-2024",
-    "Ornament-poster-black",
-    "Orament-X-mas",
-    "Mug-and-Ornament",
-    "Longsleeve-Shirt",
-    "T-shirts-shirt",
-    "t-shirt-white",
-    "t-shirt-black",
-    "Posters-black",
-    "Posters-white",
-    "black-poster",
-    "white-poster",
-    "long-sleeve",
-    "poster-portrait",
-    "Poster-Canvas",
-    "ladies-tee",
-    "v-neck",
-    "t-shirt_classic",
-    "shirt_classic",
-    "shirts-men-shirt",
-    "White-Ornaments",
-    "white-shirt",
-    "classic-mens",
-    "men-shirt",
-    "sweatshirt",
-    "t-shirts",
-    "t-shirt",
-    "tshirt",
-    "Ladies",
-    "sweater",
-    "hoodie",
-    "Official",
-    "ornament",
-    "poster",
-    "shirt",
-    "Original",
-    "Originals",
-    "Unisex",
-    "mug",
-    "shirt0",
-    "gift0",
-  ];
+            "Ceramic-Ornament-Ceramic-Mug-Poster-and-Classic-Dad-Cap",
+			"Orament-Christmas-den",
+            "Ornament-X-Mas-2024",
+            "Ornament-poster-black",
+            "Orament-X-mas",
+            "Mug-and-Ornament",
+			"Longsleeve-Shirt",
+            "T-shirts-shirt",
+            "t-shirt-white",
+            "t-shirt-black",
+            "Posters-black",
+            "Posters-white",
+            "black-poster",
+            "white-poster",
+			"long-sleeve",
+			"long-sleve",
+            "poster-portrait",
+            "Poster-Canvas",
+            "ladies-tee",
+            "v-neck",
+            "t-shirt_classic",
+            "shirt_classic",
+            "shirts-men-shirt",
+            "White-Ornaments",
+			"ornament-white",
+			"white-shirt",
+			"Mens-White-Tee",
+            "classic-mens",
+            "men-shirt",
+            "sweatshirt",
+            "t-shirts",
+            "t-shirt",
+            "tshirt",
+            "Ladies",
+            "sweater",
+            "hoodie",
+            "Official",
+            "ornament",
+            "poster",
+            "shirt",
+            "Original",
+            "Originals",
+            "Unisex",
+			"Blackshirt",
+            "mug",
+			"shirt0"
+        ];
 
-  // --- 2. CÁC HÀM TIỆN ÍCH VÀ XỬ LÝ ẢNH ---
+  // =======================================================================
+  // === 2. CÁC HÀM TIỆN ÍCH VÀ XỬ LÝ ẢNH ===
+  // =======================================================================
+
   function loadImage(url) {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -116,60 +123,13 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       img.src = url;
     });
   }
-  function sharpenCanvas(canvas, amount = 1.2) {
-    const ctx = canvas.getContext("2d");
-    const width = canvas.width;
-    const height = canvas.height;
 
-    const sharpenedCanvas = document.createElement("canvas");
-    sharpenedCanvas.width = width;
-    sharpenedCanvas.height = height;
-    const sharpCtx = sharpenedCanvas.getContext("2d");
-
-    // Vẽ ảnh gốc
-    sharpCtx.drawImage(canvas, 0, 0);
-
-    // Vẽ một lớp ảnh mờ lên trên
-    sharpCtx.globalCompositeOperation = "difference";
-    sharpCtx.filter = "blur(1px)";
-    sharpCtx.drawImage(canvas, 0, 0);
-
-    // Tăng cường độ sắc nét bằng cách vẽ lại lớp difference đó
-    sharpCtx.globalCompositeOperation = "lighter";
-    sharpCtx.filter = "brightness(1)"; // Reset filter
-    sharpCtx.globalAlpha = amount; // amount càng cao, ảnh càng nét
-    sharpCtx.drawImage(
-      sharpCtx.canvas,
-      0,
-      0,
-      width,
-      height,
-      0,
-      0,
-      width,
-      height
-    );
-
-    // Kết hợp ảnh gốc và lớp chi tiết
-    const finalCanvas = document.createElement("canvas");
-    finalCanvas.width = width;
-    finalCanvas.height = height;
-    const finalCtx = finalCanvas.getContext("2d");
-
-    finalCtx.drawImage(canvas, 0, 0); // Vẽ ảnh gốc
-    finalCtx.globalCompositeOperation = "lighter";
-    finalCtx.drawImage(sharpenedCanvas, 0, 0); // Cộng thêm chi tiết
-
-    return finalCanvas;
-  }
   function getTrimmedCanvas(canvas) {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
-    let minX = canvas.width,
-      minY = canvas.height,
-      maxX = 0,
-      maxY = 0;
+    let minX = canvas.width, minY = canvas.height, maxX = 0, maxY = 0;
+
     for (let y = 0; y < canvas.height; y++) {
       for (let x = 0; x < canvas.width; x++) {
         if (data[(y * canvas.width + x) * 4 + 3] > 0) {
@@ -180,12 +140,13 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
         }
       }
     }
+
     if (minX > maxX || minY > maxY) {
       const newCanvas = document.createElement("canvas");
-      newCanvas.width = 1;
-      newCanvas.height = 1;
+      newCanvas.width = 1; newCanvas.height = 1;
       return newCanvas;
     }
+
     const padding = 10;
     const newWidth = maxX - minX + 1 + padding * 2;
     const newHeight = maxY - minY + 1 + padding * 2;
@@ -196,61 +157,65 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       .getContext("2d")
       .drawImage(
         canvas,
-        minX,
-        minY,
-        maxX - minX + 1,
-        maxY - minY + 1,
-        padding,
-        padding,
-        maxX - minX + 1,
-        maxY - minY + 1
+        minX, minY, maxX - minX + 1, maxY - minY + 1,
+        padding, padding, maxX - minX + 1, maxY - minY + 1
       );
     return newCanvas;
   }
+
+  // Thuật toán tách nền cơ bản nhưng hiệu quả, quét toàn bộ pixel
   async function removeBackground(canvas) {
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
     const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imgData.data;
     const width = canvas.width;
     const height = canvas.height;
-    const tolerance = 35; // Có thể tăng/giảm giá trị này
+    const tolerance = 35;
 
-    // Lấy mẫu màu nền từ 4 góc
     const cornerSamples = [
-      { x: 1, y: 1 },
-      { x: width - 2, y: 1 },
-      { x: 1, y: height - 2 },
-      { x: width - 2, y: height - 2 },
+      { x: 1, y: 1 }, { x: width - 2, y: 1 },
+      { x: 1, y: height - 2 }, { x: width - 2, y: height - 2 },
     ];
 
-    const backgroundColors = cornerSamples.map((corner) => {
+    const backgroundColors = cornerSamples.map(corner => {
       const i = (corner.y * width + corner.x) * 4;
       return { r: data[i], g: data[i + 1], b: data[i + 2] };
     });
 
-    // Hàm kiểm tra một pixel có phải màu nền không
     function isBackgroundColor(r, g, b) {
-      return backgroundColors.some(
-        (bgColor) =>
-          Math.abs(r - bgColor.r) <= tolerance &&
-          Math.abs(g - bgColor.g) <= tolerance &&
-          Math.abs(b - bgColor.b) <= tolerance
+      return backgroundColors.some(bgColor =>
+        Math.abs(r - bgColor.r) <= tolerance &&
+        Math.abs(g - bgColor.g) <= tolerance &&
+        Math.abs(b - bgColor.b) <= tolerance
       );
     }
 
-    // Lặp qua tất cả các pixel
     for (let i = 0; i < data.length; i += 4) {
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-      if (isBackgroundColor(r, g, b)) {
-        data[i + 3] = 0; // Làm cho pixel trong suốt
+      if (isBackgroundColor(data[i], data[i + 1], data[i + 2])) {
+        data[i + 3] = 0; // Làm pixel trong suốt
       }
     }
-
     ctx.putImageData(imgData, 0, 0);
-    return getTrimmedCanvas(canvas); // getTrimmedCanvas vẫn giữ nguyên
+    return canvas;
   }
+
+  // Hàm "Làm cứng" cạnh viền để loại bỏ pixel bán trong suốt, chống mờ
+  function hardenAlphaChannel(canvas, threshold = 30) {
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imgData.data;
+
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3] > threshold) {
+        data[i + 3] = 255; // Ép thành rõ nét 100%
+      } else {
+        data[i + 3] = 0;   // Ép thành trong suốt 100%
+      }
+    }
+    ctx.putImageData(imgData, 0, 0);
+    return canvas;
+  }
+
   function determineShirtColor(image, coords) {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -261,6 +226,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     const brightness = (pixelData[0] + pixelData[1] + pixelData[2]) / 3;
     return brightness > 150;
   }
+
   function cleanTitle(fileName) {
     let stem = fileName;
     const lastDotIndex = fileName.lastIndexOf(".");
@@ -271,15 +237,13 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       (a, b) => b.length - a.length
     );
     sortedKeywords.forEach((keyword) => {
-      const pattern = new RegExp(
-        `\\b${keyword.replace(/[-_\s]/g, "[-_\\s]?")}\\b`,
-        "gi"
-      );
+      const pattern = new RegExp(`\\b${keyword.replace(/[-_\s]/g, "[-_\\s]?")}\\b`, "gi");
       stem = stem.replace(pattern, "");
     });
     stem = stem.replace(/[-_]/g, " ").replace(/\s+/g, " ").trim();
     return stem || "downloaded-design";
   }
+
   function rotateCanvas(canvas, angle) {
     const angleInDegrees = parseInt(angle, 10) || 0;
     if (angleInDegrees === 0) return canvas;
@@ -297,12 +261,9 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     ctx.drawImage(canvas, -w / 2, -h / 2);
     return rotatedCanvas;
   }
+
   async function composeOnMockup(
-    designCanvas,
-    originalImage,
-    cropCoords,
-    selectedMockup,
-    watermarkValue
+    designCanvas, originalImage, cropCoords, selectedMockup, watermarkValue
   ) {
     const isWhiteShirt = determineShirtColor(originalImage, cropCoords);
     const color = isWhiteShirt ? "white" : "black";
@@ -316,12 +277,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     ctx.drawImage(mockupImage, 0, 0);
     const designW = designCanvas.width;
     const designH = designCanvas.height;
-    const {
-      x: frameX,
-      y: frameY,
-      w: frameW,
-      h: frameH,
-    } = selectedMockup.coords;
+    const { x: frameX, y: frameY, w: frameW, h: frameH } = selectedMockup.coords;
     let finalDesignW, finalDesignH, finalDesignX, finalDesignY;
     const designRatio = designW / designH;
     const frameRatio = frameW / frameH;
@@ -336,20 +292,12 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       finalDesignY = frameY;
       finalDesignX = frameX + (frameW - finalDesignW) / 2;
     }
-    ctx.drawImage(
-      designCanvas,
-      finalDesignX,
-      finalDesignY,
-      finalDesignW,
-      finalDesignH
-    );
+    ctx.drawImage(designCanvas, finalDesignX, finalDesignY, finalDesignW, finalDesignH);
     if (watermarkValue) {
       const isImage = /\.(jpg|jpeg|png|webp)$/i.test(watermarkValue);
       if (isImage) {
         try {
-          const watermarkUrl = chrome.runtime.getURL(
-            `assets/watermarks/${watermarkValue}`
-          );
+          const watermarkUrl = chrome.runtime.getURL(`assets/watermarks/${watermarkValue}`);
           const watermarkImg = await loadImage(watermarkUrl);
           const padding = 50;
           const maxWidth = 280;
@@ -359,63 +307,44 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
           const sigX = finalCanvas.width - sigWidth - padding;
           const sigY = finalCanvas.height - sigHeight - padding;
           ctx.drawImage(watermarkImg, sigX, sigY, sigWidth, sigHeight);
-        } catch (error) {
-          console.warn("Không thể tải ảnh watermark:", watermarkValue);
-        }
+        } catch (error) { console.warn("Không thể tải ảnh watermark:", watermarkValue); }
       } else {
         ctx.font = "bold 60px Verdana";
         ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
         ctx.textAlign = "right";
         ctx.textBaseline = "bottom";
         const padding = 20;
-        ctx.fillText(
-          watermarkValue,
-          finalCanvas.width - padding,
-          finalCanvas.height - padding
-        );
+        ctx.fillText(watermarkValue, finalCanvas.width - padding, finalCanvas.height - padding);
       }
     }
     return finalCanvas;
   }
+
   function _convert_to_gps(value, is_longitude) {
     const abs_value = Math.abs(value);
-    const ref = is_longitude
-      ? value >= 0
-        ? "E"
-        : "W"
-      : value >= 0
-      ? "N"
-      : "S";
+    const ref = is_longitude ? (value >= 0 ? "E" : "W") : (value >= 0 ? "N" : "S");
     const degrees = Math.floor(abs_value);
     const minutes_float = (abs_value - degrees) * 60;
     const minutes = Math.floor(minutes_float);
     const seconds_float = (minutes_float - minutes) * 60;
     return {
-      value: [
-        [degrees, 1],
-        [minutes, 1],
-        [Math.round(seconds_float * 100), 100],
-      ],
+      value: [[degrees, 1], [minutes, 1], [Math.round(seconds_float * 100), 100]],
       ref: ref,
     };
   }
+
   function createExifData(mockupId, final_filename, exif_defaults) {
     const domain_exif = mockupId + ".com";
     const now = new Date();
     const digitized_time = new Date(now.getTime() - 2 * 60 * 60 * 1000);
-    const original_time = new Date(
-      digitized_time.getTime() -
-        (Math.floor(Math.random() * (7500 - 3600 + 1)) + 3600) * 1000
-    );
-    const toExifDT = (date) =>
-      date.toISOString().slice(0, 19).replace("T", " ").replace(/-/g, ":");
+    const original_time = new Date(digitized_time.getTime() - (Math.floor(Math.random() * (7500 - 3600 + 1)) + 3600) * 1000);
+    const toExifDT = (date) => date.toISOString().slice(0, 19).replace("T", " ").replace(/-/g, ":");
     try {
       const zeroth = {};
       zeroth[piexif.ImageIFD.Artist] = domain_exif;
       zeroth[piexif.ImageIFD.Copyright] = domain_exif;
       zeroth[piexif.ImageIFD.ImageDescription] = final_filename;
-      zeroth[piexif.ImageIFD.Software] =
-        exif_defaults.Software || "Adobe Photoshop 25.0";
+      zeroth[piexif.ImageIFD.Software] = exif_defaults.Software || "Adobe Photoshop 25.0";
       zeroth[piexif.ImageIFD.DateTime] = toExifDT(digitized_time);
       zeroth[piexif.ImageIFD.Make] = exif_defaults.Make || "";
       zeroth[piexif.ImageIFD.Model] = exif_defaults.Model || "";
@@ -459,41 +388,35 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       processScreenshot(msg);
     }
   });
+
   function createOverlay() {
     overlay = document.createElement("div");
     Object.assign(overlay.style, {
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      cursor: "crosshair",
-      zIndex: 999999,
+      position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
+      cursor: "crosshair", zIndex: 999999,
     });
     document.body.appendChild(overlay);
     selectionBox = document.createElement("div");
     Object.assign(selectionBox.style, {
-      position: "absolute",
-      border: "2px dashed #fff",
-      boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.5)",
-      zIndex: 1000000,
+      position: "absolute", border: "2px dashed #fff",
+      boxShadow: "0 0 0 9999px rgba(0, 0, 0, 0.5)", zIndex: 1000000,
     });
     overlay.appendChild(selectionBox);
     overlay.addEventListener("mousedown", onMouseDown);
     document.addEventListener("keydown", onKeyDown);
   }
+
   function onMouseDown(e) {
     isSelecting = true;
     startCoords = { x: e.clientX, y: e.clientY };
     Object.assign(selectionBox.style, {
-      left: startCoords.x + "px",
-      top: startCoords.y + "px",
-      width: "0px",
-      height: "0px",
+      left: startCoords.x + "px", top: startCoords.y + "px",
+      width: "0px", height: "0px",
     });
     overlay.addEventListener("mousemove", onMouseMove);
     overlay.addEventListener("mouseup", onMouseUp);
   }
+
   function onMouseMove(e) {
     if (!isSelecting) return;
     const x = Math.min(e.clientX, startCoords.x);
@@ -501,10 +424,7 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     const w = Math.abs(e.clientX - startCoords.x);
     const h = Math.abs(e.clientY - startCoords.y);
     Object.assign(selectionBox.style, {
-      left: x + "px",
-      top: y + "px",
-      width: w + "px",
-      height: h + "px",
+      left: x + "px", top: y + "px", width: w + "px", height: h + "px",
     });
   }
 
@@ -513,54 +433,30 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     overlay.style.display = "none";
     let filename = "cropped-image";
     const host = window.location.hostname;
-    const settings = await chrome.storage.sync.get([
-      "filenameSources",
-      "initialWarningShown",
-    ]);
+    const settings = await chrome.storage.sync.get(["filenameSources", "initialWarningShown"]);
     const sources = settings.filenameSources || {};
     const sourceMethod = host && sources[host] ? sources[host] : "image_src";
     if (!settings.initialWarningShown) {
-      alert(
-        "Thông báo: Tên file đang được lấy từ nguồn mặc định (tên ảnh gốc). Bạn có thể thay đổi cài đặt này cho từng trang web trong popup của extension."
-      );
+      alert("Thông báo: Tên file đang được lấy từ nguồn mặc định (tên ảnh gốc). Bạn có thể thay đổi cài đặt này cho từng trang web trong popup của extension.");
       chrome.storage.sync.set({ initialWarningShown: true });
     }
     if (sourceMethod === "clipboard") {
       try {
         const clipboardText = await navigator.clipboard.readText();
-        if (clipboardText.trim()) {
-          filename = clipboardText.trim();
-        }
-      } catch (error) {
-        console.warn(
-          "Không thể đọc clipboard, sẽ dùng tên file gốc. Lỗi:",
-          error.message
-        );
-      }
+        if (clipboardText.trim()) { filename = clipboardText.trim(); }
+      } catch (error) { console.warn("Không thể đọc clipboard, sẽ dùng tên file gốc. Lỗi:", error.message); }
     }
     if (filename === "cropped-image") {
       overlay.style.pointerEvents = "none";
-      const elementUnderCursor = document.elementFromPoint(
-        e.clientX,
-        e.clientY
-      );
+      const elementUnderCursor = document.elementFromPoint(e.clientX, e.clientY);
       overlay.style.pointerEvents = "auto";
-      if (
-        elementUnderCursor &&
-        elementUnderCursor.tagName === "IMG" &&
-        elementUnderCursor.src
-      ) {
+      if (elementUnderCursor && elementUnderCursor.tagName === "IMG" && elementUnderCursor.src) {
         try {
           const url = new URL(elementUnderCursor.src, window.location.href);
           const pathParts = url.pathname.split("/");
           const fname = pathParts.pop() || "image";
           filename = fname.substring(0, fname.lastIndexOf(".")) || fname;
-        } catch (error) {
-          console.warn(
-            "Không thể lấy tên file từ src:",
-            elementUnderCursor.src
-          );
-        }
+        } catch (error) { console.warn("Không thể lấy tên file từ src:", elementUnderCursor.src); }
       }
     }
     const dpr = window.devicePixelRatio || 1;
@@ -575,17 +471,14 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
     const selectedMockup = MOCKUP_SETS.find((m) => m.id === selectedId);
     setTimeout(() => {
       chrome.runtime.sendMessage({
-        action: "captureTab",
-        cropData: cropData,
-        filename: filename,
-        selectedMockup: selectedMockup,
+        action: "captureTab", cropData: cropData,
+        filename: filename, selectedMockup: selectedMockup,
       });
       cleanup();
     }, 100);
   }
 
-  // Thay thế hàm processScreenshot cũ bằng hàm này
-
+  // --- HÀM XỬ LÝ CHÍNH ĐÃ ĐƯỢC TINH GỌN ---
   async function processScreenshot(msg) {
     if (!msg.cropData || msg.cropData.w <= 0 || msg.cropData.h <= 0) return;
     try {
@@ -593,87 +486,55 @@ if (typeof window.ktbClonerScriptInjected === "undefined") {
       const designCanvas = document.createElement("canvas");
       designCanvas.width = msg.cropData.w;
       designCanvas.height = msg.cropData.h;
-      const designCtx = designCanvas.getContext("2d", {
-        willReadFrequently: true,
-      });
+      const designCtx = designCanvas.getContext("2d", { willReadFrequently: true });
       designCtx.drawImage(
         screenshotImg,
-        msg.cropData.x,
-        msg.cropData.y,
-        msg.cropData.w,
-        msg.cropData.h,
-        0,
-        0,
-        msg.cropData.w,
-        msg.cropData.h
+        msg.cropData.x, msg.cropData.y, msg.cropData.w, msg.cropData.h,
+        0, 0, msg.cropData.w, msg.cropData.h
       );
 
-      // --- THAY ĐỔI BẮT ĐẦU TỪ ĐÂY ---
+      // --- LUỒNG XỬ LÝ ẢNH MỚI ---
+      // 1. Tách nền bằng thuật toán cơ bản, hiệu quả
+      const canvasAfterBgRemoval = await removeBackground(designCanvas);
 
-      // 1. Tách nền bằng thuật toán mới, sạch hơn
-      const transparentDesignCanvas = await removeBackground(designCanvas);
+      // 2. Làm cứng viền để đảm bảo độ sắc nét và kích thước chuẩn
+      const canvasAfterHardening = hardenAlphaChannel(canvasAfterBgRemoval);
 
-      // 2. Làm nét ảnh đã tách nền
-      const sharpenedCanvas = sharpenCanvas(transparentDesignCanvas, 1.2); // Tăng 1.2 lên để nét hơn
+      // 3. Cắt bỏ vùng trong suốt thừa để có canvas cuối cùng
+      const transparentDesignCanvas = getTrimmedCanvas(canvasAfterHardening);
 
-      const settings = await chrome.storage.sync.get([
-        "settingOverrides",
-        "rotationAngle",
-      ]);
+      // -----------------------------
+
+      const settings = await chrome.storage.sync.get(["settingOverrides", "rotationAngle"]);
       const overrides = settings.settingOverrides || {};
       const mockupOverrides = overrides[msg.selectedMockup.id] || {};
       const angle = settings.rotationAngle || 0;
 
-      // 3. Xoay ảnh đã được làm nét
-      const rotatedDesignCanvas = rotateCanvas(sharpenedCanvas, angle);
+      const rotatedDesignCanvas = rotateCanvas(transparentDesignCanvas, angle);
 
-      // --- PHẦN CÒN LẠI GIỮ NGUYÊN ---
-
-      const prefix =
-        mockupOverrides.prefix !== undefined
-          ? mockupOverrides.prefix
-          : msg.selectedMockup.defaults.prefix;
-      const suffix =
-        mockupOverrides.suffix !== undefined
-          ? mockupOverrides.suffix
-          : msg.selectedMockup.defaults.suffix;
-      const watermark =
-        mockupOverrides.watermark !== undefined
-          ? mockupOverrides.watermark
-          : msg.selectedMockup.defaults.watermark;
+      const prefix = mockupOverrides.prefix !== undefined ? mockupOverrides.prefix : msg.selectedMockup.defaults.prefix;
+      const suffix = mockupOverrides.suffix !== undefined ? mockupOverrides.suffix : msg.selectedMockup.defaults.suffix;
+      const watermark = mockupOverrides.watermark !== undefined ? mockupOverrides.watermark : msg.selectedMockup.defaults.watermark;
 
       const finalCanvas = await composeOnMockup(
-        rotatedDesignCanvas, // Sử dụng canvas đã xoay và làm nét
+        rotatedDesignCanvas,
         screenshotImg,
         msg.cropData,
         msg.selectedMockup,
         watermark
       );
       const cleanedName = cleanTitle(msg.filename);
-      const finalFilename = [prefix, cleanedName, suffix]
-        .filter(Boolean)
-        .join(" ")
-        .trim();
-
-      let dataUrl = finalCanvas.toDataURL("image/jpeg", 0.95); // Tăng chất lượng ảnh lên 0.95
+      const finalFilename = [prefix, cleanedName, suffix].filter(Boolean).join(" ").trim();
+      let dataUrl = finalCanvas.toDataURL("image/jpeg", 0.95);
 
       const exif_defaults = {
-        Software: "Adobe Photoshop 22.3",
-        Make: "Canon",
-        Model: "Canon EOS R5",
-        GPSLatitude: 33.7465515,
-        GPSLongitude: -118.0297799,
-        FNumber: [28, 10],
-        ExposureTime: [1, 125],
-        ISOSpeedRatings: 100,
-        FocalLength: [50, 1],
+        Software: "Adobe Photoshop 22.3", Make: "Canon", Model: "Canon EOS R5",
+        GPSLatitude: 33.7465515, GPSLongitude: -118.0297799,
+        FNumber: [28, 10], ExposureTime: [1, 125],
+        ISOSpeedRatings: 100, FocalLength: [50, 1],
       };
 
-      const exifBytes = createExifData(
-        msg.selectedMockup.id,
-        finalFilename,
-        exif_defaults
-      );
+      const exifBytes = createExifData(msg.selectedMockup.id, finalFilename, exif_defaults);
       if (exifBytes) {
         dataUrl = piexif.insert(exifBytes, dataUrl);
       }
