@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<title>Thanh Thần Tún V13</title>
+<link rel="icon" href="https://khuetran.com/wp-content/uploads/icon.png" sizes="32x32" type="image/png">
+<link rel="shortcut icon" href="https://khuetran.com/wp-content/uploads/shortcut-icon.png" type="image/png">
+<style>
+  body { font-family: Arial, sans-serif; background:#f4f6fa; margin:0; padding:20px; text-align:center; }
+  .domains { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 746px; margin: 0 auto 20px auto; align-items: start; }
+  .col { display:flex; flex-direction:column; gap:10px; }
+  #v13Col2 { overflow-y: auto; }
+  .domain { background:#fff; padding:5px 15px; border-radius:8px; border:1px solid #ddd; display:flex; justify-content:space-between; align-items:center; }
+  a, a:visited { text-decoration: none; color: blue; }
+  button { padding:6px 12px; cursor:pointer; border:none; border-radius:5px; background:#2563eb; color:white; }
+  button:hover { background:#1d4ed8; }
+  #status { margin: 15px auto; color: #555; font-style: italic; max-width: 700px; overflow-wrap: break-word; height: 40px; }
+  .results { display:flex; flex-direction:column; gap:16px; align-items:center; }
+  .product { background:#fff; border:1px solid #ddd; padding:12px; border-radius:10px; width:750px; text-align:center; }
+  .product img { max-width:700px; height:auto; border-radius:8px; margin-bottom:8px; }
+  .title { font-weight:bold; font-size:16px; margin-bottom:4px; }
+  .collapsible-container { max-width: 776px; margin: 5px auto; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+  .config-section { margin: 0 auto; text-align: left; padding: 10px 20px; max-width: 736px; background: #fff; }
+  .config-section h2, .config-section h3 { text-align: center; margin-top: 10px; }
+  .flex-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 10px auto; max-width: 776px; }
+  .flex-row .input-wrapper { display: flex; flex-direction: column; flex: 1; min-width: 250px; }
+  .flex-row .input-wrapper input { width: 100%; box-sizing: border-box; padding: 6px; }
+  .flex-row .input-wrapper p { text-align: left; margin: 0; font-size: 14px; color: #666; }
+  .file-upload-section { background: #fff; border: 1px solid #ddd; border-radius: 8px; max-width: 746px; margin: 20px auto; padding: 15px; }
+</style>
+</head>
+<body>
+<h1><a href="javascript:location.reload()">Thanh Thần Tún V13</a></h1>
+<h2>Tổng hợp trending mới nhất trong ngày của ngành</h2>
+<p>All in one - 1-click bắt trend của 40+ website đầu ngành!</p>
+<div class="config-section">
+  <h2>Bước 2: Chọn Vùng Cắt (Chỉ cần làm 1 lần)</h2>
+  <button id="loadFirstImageButton">Tải ảnh đầu tiên để chọn vùng</button>
+  <div id="cropper-container" 
+       style="position: relative; max-width: 700px; margin: 10px auto; border: 1px solid #ccc;">
+    </div>
+</div>
+
+<div class="config-section">
+  <h2>Bước 3: Tùy chọn & Xử lý hàng loạt</h2>
+  
+  <select id="mockupSelector"></select> <input type="text" id="rotationAngle" placeholder="Góc xoay (ví dụ: 0)">
+
+  <h3>Bộ lọc (Tùy chọn)</h3>
+  <input type="text" id="patternFilter" placeholder="Lọc pattern (ví dụ: -shirt.jpg)">
+  <div>
+    <input type="checkbox" id="skipWhite"> <label for="skipWhite">Bỏ qua áo trắng</label>
+    <input type="checkbox" id="skipBlack"> <label for="skipBlack">Bỏ qua áo đen</label>
+  </div>
+  
+  <button id="startBatchProcess" style="background: #d9534f; font-size: 18px; padding: 15px;">
+    BẮT ĐẦU GHÉP HÀNG LOẠT
+  </button>
+  
+  <h3>Tiến trình:</h3>
+  <div id="batchStatus" style="text-align: left; height: 100px; overflow-y: auto; background: #eee; padding: 5px;">
+    Chưa chạy...
+  </div>
+</div>
+<div class="file-upload-section">
+    <h3>Tải lên file .txt chứa link ảnh của bạn</h3>
+    <input type="file" id="localTxtFile" accept=".txt" style="margin-right: 10px;">
+    <button onclick="handleLocalFile()">Show sản phẩm từ file</button>
+</div>
+
+<div class="collapsible-container">
+  <div class="config-section">
+    <h3>Config hỗ trợ đổi title</h3>
+    <div class="flex-row">
+      <div class="input-wrapper">
+        <input type="text" id="prefixToAdd" placeholder="Prefix to add: Trending">
+      </div>
+      <div class="input-wrapper">
+        <input type="text" id="suffixToAdd" placeholder="Suffix to add: Sweater Tee 2025">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="collapsible-container">
+    <h3>Danh sách domain V13: Load nhanh hơn + fix lỗi not found</h3>
+    <div class="domains" id="v13DomainList">
+        <div class="col" id="v13Col1"></div>
+        <div class="col" id="v13Col2"></div>
+    </div>
+</div>
+
+<div id="status">Chưa quét.</div>
+<div id="results" class="results"></div>
+<script src="lib/piexif.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>

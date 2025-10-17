@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "KtbBulkCloner V1.0",
+  "version": "1.0",
+  "description": "Quét 1 ảnh, ăn tất cả.",
+  "permissions": [
+    "storage",
+    "downloads"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "KtbBulkCloner"
+  }
+}
